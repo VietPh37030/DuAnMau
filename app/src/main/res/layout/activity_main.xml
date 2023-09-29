@@ -1,18 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigationDrawer1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:fitsSystemWindows="true"
+    tools:context=".MainActivity"
+    tools:openDrawer="start">
+    <!--    android:fitsSystemWindows="true"` sử dụng để đảm bảo nội dung của view được hiển -->
+    <!--    thị trong các cửa sổ hệ thống, thay vì phía sau chúng.-->
+    <!--    `tools:openDrawer="start"` được sử dụng để chỉ định rằng navigation drawer sẽ được mở khi xem trước layout,-->
+    <!--    nhưng không ảnh hưởng đến ứng dụng thực tế. Nó chỉ được sử dụng để mô phỏng việc mở navigation drawer trong trình xem trước.-->
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:orientation="vertical">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="#3461FF"
+            android:elevation="5dp"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+        <!--  `android:elevation="4dp"` được sử dụng để tạo hiệu ứng đổ bóng và tạo độ sâu cho các view bằng cách thiết lập độ nâng của chúng lên 4 điểm ảnh.-->
+        <!--    `app:popupTheme="@style/ThemeOverlay.AppCompat.Light"` được sử dụng để thiết lập chủ đề cho các popup menu trong ứng dụng, trong khi `android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"` được sử dụng để thiết lập chủ đề cho action bar. Chúng cho phép bạn tùy chỉnh giao diện của ứng dụng bằng cách áp dụng các chủ đề khác nhau cho các phần khác nhau của giao diện. Trong trường hợp này, chủ đề `ThemeOverlay.AppCompat.Light` được áp dụng cho các popup menu, trong khi chủ đề `ThemeOverlay.AppCompat.Dark.ActionBar` được áp dụng cho action bar.-->
+        <FrameLayout
+            android:id="@+id/frag_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigation_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/head_nav"
+        app:menu="@menu/menu_pn" />
+
+</androidx.drawerlayout.widget.DrawerLayout>

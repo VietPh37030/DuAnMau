@@ -13,7 +13,7 @@ public class DpHelper extends SQLiteOpenHelper  {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String tableone =  "CREATE TABLE thuthu(MATT TEXT PRIMARY KEY AUTOINCREMENT," +
+        String tableone =  "CREATE TABLE thuthu(MATT TEXT PRIMARY KEY ," +
                 "HOTEN TEXT," +
                 "MATKHAU TEXT)";
             db.execSQL(tableone);
@@ -37,6 +37,10 @@ public class DpHelper extends SQLiteOpenHelper  {
                     "NGAY INT," +
                     "TRASACH INT NOT NULL)";
             db.execSQL(tablefive);
+
+
+        String logthuthu = "INSERT INTO thuthu VALUES('thuthu1','Viet','123')," + "('thuthu2','Viet2','123'),"+"('admin','Vietanh','123')";
+        db.execSQL(logthuthu);
     }
 
     @Override
