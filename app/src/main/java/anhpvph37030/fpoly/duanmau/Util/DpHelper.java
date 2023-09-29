@@ -1,6 +1,7 @@
 package anhpvph37030.fpoly.duanmau.Util;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -38,7 +39,7 @@ public class DpHelper extends SQLiteOpenHelper  {
                     "TRASACH INT NOT NULL)";
             db.execSQL(tablefive);
 
-
+        db.execSQL("INSERT INTO thanhvien VALUES (1,'Cao Thu Trang','2000'),(2,'Trần Mỹ Kim','2000')");
         String logthuthu = "INSERT INTO thuthu VALUES('thuthu1','Viet','123')," + "('thuthu2','Viet2','123'),"+"('admin','Vietanh','123')";
         db.execSQL(logthuthu);
     }
@@ -54,5 +55,10 @@ public class DpHelper extends SQLiteOpenHelper  {
 
             onCreate(db);
         }
+    }
+
+    public Cursor GetData(String s) {
+        SQLiteDatabase database = getReadableDatabase();
+        return database.rawQuery(s, null);
     }
 }
