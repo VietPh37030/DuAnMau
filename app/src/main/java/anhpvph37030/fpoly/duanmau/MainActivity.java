@@ -47,7 +47,8 @@ public class MainActivity extends AppCompatActivity {
         toggle.syncState();//`toggle.syncState()` được sử dụng để đồng bộ trạng thái của toggle button với trạng thái của Navigation Drawer.
         navigationView.setItemIconTintList(null);
         getSupportActionBar().setTitle("Quản Lý Phiếu Mượn");
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
 
         //// su li navigation

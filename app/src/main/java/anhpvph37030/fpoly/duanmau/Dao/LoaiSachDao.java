@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 import anhpvph37030.fpoly.duanmau.Model.LoaiSach;
 import anhpvph37030.fpoly.duanmau.Util.DpHelper;
@@ -15,21 +14,19 @@ public class LoaiSachDao {
     public ArrayList<LoaiSach> getLoaiSach(Context context) {
         ArrayList<LoaiSach> list = new ArrayList<>();
         DpHelper dpHelper = new DpHelper(context);
-        Cursor cursor = dpHelper.GetData("SELETCT * FROM loaisach");
+        Cursor cursor = dpHelper.GetData("SELECT * FROM loaisach");
         if (cursor.getCount() != 0) {
             while (cursor.moveToNext()) {
                 list.add(new LoaiSach(cursor.getInt(0), cursor.getString(1)));
-
             }
         }
         return list;
     }
 
-    public boolean addls(Context context, int Maloai, String tenloai) {
+    public boolean addls(Context context, String tenloai) {
         DpHelper dpHelper = new DpHelper(context);
         SQLiteDatabase database = dpHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put("MALOAI", Maloai);
         values.put("TENLOAISACH", tenloai);
         long check = database.insert("loaisach", null, values);
         if (check == -1) {
