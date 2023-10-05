@@ -1,10 +1,13 @@
 package anhpvph37030.fpoly.duanmau.Adapter;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -12,6 +15,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
 
@@ -78,6 +83,39 @@ public class LoaiSachAdapter extends RecyclerView.Adapter<LoaiSachAdapter.ViewHo
                 });
                 builder.show();
 
+            }
+        });
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
+                view = inflater.inflate(R.layout.edit_loaisach, null);
+                builder.setView(view);
+                Dialog dialog = builder.create();
+                dialog.show();
+                TextInputEditText edt_updatels = view.findViewById(R.id.edt_updatels);
+                Button btn_updatels = view.findViewById(R.id.btn_updatebutton);
+                edt_updatels.setText(loaiSach.getTenloaisach());
+                btn_updatels.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (edt_updatels.getText().toString().equals("")) {
+                            Toast.makeText(mContext, "Vui Lòg nhập loại sách", Toast.LENGTH_SHORT).show();
+                        } else {
+                            LoaiSach loaiSach1 = new LoaiSach(list.get(holder.getAdapterPosition()).getMaloai(), edt_updatels.getText().toString());
+                            dao = new LoaiSachDao();
+                            String check = dao.updatels(mContext, String.valueOf(list.get(holder.getAdapterPosition()).getMaloai()), loaiSach1);
+                            list.clear();
+                            list = dao.getLoaiSach(mContext);
+                            dialog.dismiss();
+                            notifyDataSetChanged();
+                        }
+                    }
+                });
+
+
+                return false;
             }
         });
     }

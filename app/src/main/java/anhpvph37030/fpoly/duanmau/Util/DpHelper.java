@@ -28,7 +28,9 @@ public class DpHelper extends SQLiteOpenHelper  {
             String tablefour = "CREATE TABLE sach(MASACH INTEGER PRIMARY KEY AUTOINCREMENT," +
                     "TENSACH TEXT," +
                     "GIATHUE INT," +
-                    "MALOAI INT)";
+                    "Image TEXT," +
+                    "TENLOAISACH TEXT," +
+                    "MALOAI INT REFERENCES loaisach(MALOAI))";
             db.execSQL(tablefour);
             String tablefive = "CREATE TABLE phieumuon(MASPM INTEGER PRIMARY KEY AUTOINCREMENT," +
                     "MATT TEXT," +
@@ -42,6 +44,7 @@ public class DpHelper extends SQLiteOpenHelper  {
         db.execSQL("INSERT INTO thanhvien VALUES (1,'Cao Thu Trang','2000'),(2,'Trần Mỹ Kim','2000')");
         String logthuthu = "INSERT INTO thuthu VALUES('thuthu1','Viet','123')," + "('thuthu2','Viet2','123'),"+"('admin','Vietanh','123')";
         db.execSQL(logthuthu);
+        db.execSQL("INSERT INTO loaisach VALUES (1, 'Java1'),(2,'Úng Dụng Phần Mềm'),(3, 'Đồ Họa')");
     }
 
     @Override

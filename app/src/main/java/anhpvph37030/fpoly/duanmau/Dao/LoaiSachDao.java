@@ -54,11 +54,11 @@ public class LoaiSachDao {
     public String updatels(Context context, String maLoai, LoaiSach loaiSach) {
         DpHelper dpHelper = new DpHelper(context);
         SQLiteDatabase database = dpHelper.getWritableDatabase();
-        Cursor cursor = database.rawQuery("SELECT * FROM loaisaach WHERE MALOAI=?", new String[]{maLoai});
+        Cursor cursor = database.rawQuery("SELECT * FROM loaisach WHERE MALOAI=?", new String[]{maLoai});
         if (cursor.getCount() != 0) {
             ContentValues values = new ContentValues();
             values.put("MALOAI", loaiSach.getMaloai());
-            values.put("TENLOAI", loaiSach.getTenloaisach());
+            values.put("TENLOAISACH", loaiSach.getTenloaisach());
             long check = database.update("loaisach", values, "MALOAI=?", new String[]{maLoai});
             if (check == -1) {
                 return "ERROR";

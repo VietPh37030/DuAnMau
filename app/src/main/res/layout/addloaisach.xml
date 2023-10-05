@@ -23,6 +23,7 @@
             android:background="@drawable/boder"
             android:backgroundTint="#ccc"
             android:hint="Mã Loại"
+            android:inputType="none"
             android:paddingLeft="20dp" />
     </com.google.android.material.textfield.TextInputLayout>
 

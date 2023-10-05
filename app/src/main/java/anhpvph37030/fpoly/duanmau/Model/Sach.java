@@ -1,50 +1,80 @@
 package anhpvph37030.fpoly.duanmau.Model;
 
 public class Sach {
-    private int masach;
-    private String tensach;
-    private int giathue ;
-    private int maloai;
+    private int maSach;
+    private String tenSach;
+    private int giaThue;
+    private String image;
+    private String maloaisach;
+    private String tenloaisach;
+    private int soluongdamuon;
 
     public Sach() {
     }
 
-    public Sach(int masach, String tensach, int giathue, int maloai) {
-        this.masach = masach;
-        this.tensach = tensach;
-        this.giathue = giathue;
-        this.maloai = maloai;
+    public Sach(int maSach, String tenSach, int giaThue, String image, String maloaisach, String tenloaisach, int soluongdamuon) {
+        this.maSach = maSach;
+        this.tenSach = tenSach;
+        this.giaThue = giaThue;
+        this.image = image;
+        this.maloaisach = maloaisach;
+        this.tenloaisach = tenloaisach;
+        this.soluongdamuon = soluongdamuon;
     }
 
-    public int getMasach() {
-        return masach;
+    public int getMaSach() {
+        return maSach;
     }
 
-    public void setMasach(int masach) {
-        this.masach = masach;
+    public void setMaSach(int maSach) {
+        this.maSach = maSach;
     }
 
-    public String getTensach() {
-        return tensach;
+    public String getTenSach() {
+        return tenSach;
     }
 
-    public void setTensach(String tensach) {
-        this.tensach = tensach;
+    public void setTenSach(String tenSach) {
+        this.tenSach = tenSach;
     }
 
-    public int getGiathue() {
-        return giathue;
+    public int getGiaThue() {
+        return giaThue;
     }
 
-    public void setGiathue(int giathue) {
-        this.giathue = giathue;
+    public void setGiaThue(int giaThue) {
+        this.giaThue = giaThue;
     }
 
-    public int getMaloai() {
-        return maloai;
+    public String getImage() {
+        return image;
     }
 
-    public void setMaloai(int maloai) {
-        this.maloai = maloai;
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getMaloaisach() {
+        return maloaisach;
+    }
+
+    public void setMaloaisach(String maloaisach) {
+        this.maloaisach = maloaisach;
+    }
+
+    public String getTenloaisach() {
+        return tenloaisach;
+    }
+
+    public void setTenloaisach(String tenloaisach) {
+        this.tenloaisach = tenloaisach;
+    }
+
+    public int getSoluongdamuon() {
+        return soluongdamuon;
+    }
+
+    public void setSoluongdamuon(int soluongdamuon) {
+        this.soluongdamuon = soluongdamuon;
     }
 }

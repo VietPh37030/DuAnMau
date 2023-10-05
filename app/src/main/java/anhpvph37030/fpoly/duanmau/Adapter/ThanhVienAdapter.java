@@ -79,37 +79,7 @@ public class ThanhVienAdapter extends RecyclerView.Adapter<ThanhVienAdapter.View
                 builder.show();
             }
         });
-//     holder.itemView.setOnClickListener(new View.OnClickListener() {
-//         @Override
-//         public void onClick(View view) {
-//             AlertDialog.Builder builder = new AlertDialog.Builder(Mcontext);
-//             LayoutInflater inflater = ((Activity)Mcontext).getLayoutInflater();
-//             View view1 = inflater.inflate(R.layout.dialog_tv, null);
-//             builder.setView(view);
-//             Dialog dialog = builder.create();
-//             dialog.show();
-//             TextInputEditText edtstentv = view.findViewById(R.id.up_tentv);
-//             TextInputEditText edtsnstv = view.findViewById(R.id.up_namsinh);
-//             Button btnsuatv = view.findViewById(R.id.btnLuu);
-//             btnsuatv.setOnClickListener(new View.OnClickListener() {
-//                 @Override
-//                 public void onClick(View v) {
-//                     ThanhVienDao dao = new ThanhVienDao();
-//                     String tentv = edtstentv.getText().toString();
-//                     String ns = edtsnstv.getText().toString();
-//                     if(edtstentv.getText().toString().equalsIgnoreCase("") || edtsnstv.getText().toString().equalsIgnoreCase("")){
-//                         Toast.makeText(Mcontext, "Không được để trống", Toast.LENGTH_SHORT).show();
-//                     }
-//                     Thanhvien thanhVien = new Thanhvien(list.get(holder.getAdapterPosition()).getMatv(), tentv, ns);
-//                     String check = dao.updateTV(Mcontext, list.get(holder.getAdapterPosition()).getMatv(), thanhVien);
-//                     Toast.makeText(Mcontext, check, Toast.LENGTH_SHORT).show();
-//                     list.clear();
-//                     list = dao.ListTV(Mcontext);
-//                     notifyDataSetChanged();
-//                 }
-//             });
-//         }
-//     });
+
     }
 
     @Override
