@@ -5,21 +5,28 @@ public class Sach {
     private String tenSach;
     private int giaThue;
     private String image;
-    private String maloaisach;
+    private int maloaisach;
     private String tenloaisach;
-    private int soluongdamuon;
+
+
 
     public Sach() {
     }
 
-    public Sach(int maSach, String tenSach, int giaThue, String image, String maloaisach, String tenloaisach, int soluongdamuon) {
+    public Sach(int maSach, String tenSach, int giaThue, String image, int maloaisach) {
         this.maSach = maSach;
         this.tenSach = tenSach;
         this.giaThue = giaThue;
         this.image = image;
         this.maloaisach = maloaisach;
-        this.tenloaisach = tenloaisach;
-        this.soluongdamuon = soluongdamuon;
+    }
+    public Sach(int maSach, String tenSach, int giaThue, String image, int maloaisach, String tenloaisach) {
+        this.maSach = maSach;
+        this.tenSach = tenSach;
+        this.giaThue = giaThue;
+        this.image = image;
+        this.maloaisach = maloaisach;
+        this.tenloaisach=tenloaisach;
     }
 
     public int getMaSach() {
@@ -54,27 +61,18 @@ public class Sach {
         this.image = image;
     }
 
-    public String getMaloaisach() {
+    public int getMaloaisach() {
         return maloaisach;
     }
 
-    public void setMaloaisach(String maloaisach) {
+    public void setMaloaisach(int maloaisach) {
         this.maloaisach = maloaisach;
     }
-
     public String getTenloaisach() {
         return tenloaisach;
     }
 
     public void setTenloaisach(String tenloaisach) {
         this.tenloaisach = tenloaisach;
-    }
-
-    public int getSoluongdamuon() {
-        return soluongdamuon;
-    }
-
-    public void setSoluongdamuon(int soluongdamuon) {
-        this.soluongdamuon = soluongdamuon;
     }
 }

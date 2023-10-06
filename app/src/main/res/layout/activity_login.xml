@@ -5,15 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
+
     android:background="#3461FF"
     android:padding="10dp"
     tools:context=".Login">
-<ImageView
-    android:layout_width="700px"
-    android:layout_height="700px"
-    android:background="@drawable/logo"
-    />
+
+    <ImageView
+      android:layout_gravity="center|top"
+        android:layout_width="500px"
+        android:layout_height="500px"
+        android:background="@drawable/logo" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/edtuser"
@@ -68,6 +69,7 @@
         android:text="Đăng Nhập"
         android:textStyle="bold"
         android:textColor="#fff"
+        android:layout_gravity="center"
         android:backgroundTint="#04FF1D"
         />
 </LinearLayout>
