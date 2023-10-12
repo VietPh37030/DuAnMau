@@ -1,40 +1,26 @@
 package anhpvph37030.fpoly.duanmau.Model;
 
 public class Sach {
-    private int maSach;
+    private int masach;
     private String tenSach;
-    private int giaThue;
-    private String image;
-    private int maloaisach;
-    private String tenloaisach;
-
-
+    private int tienThue;
+    private String loaiSach;
 
     public Sach() {
     }
 
-    public Sach(int maSach, String tenSach, int giaThue, String image, int maloaisach) {
-        this.maSach = maSach;
+    public Sach( String tenSach, int tienThue, String loaiSach) {
         this.tenSach = tenSach;
-        this.giaThue = giaThue;
-        this.image = image;
-        this.maloaisach = maloaisach;
-    }
-    public Sach(int maSach, String tenSach, int giaThue, String image, int maloaisach, String tenloaisach) {
-        this.maSach = maSach;
-        this.tenSach = tenSach;
-        this.giaThue = giaThue;
-        this.image = image;
-        this.maloaisach = maloaisach;
-        this.tenloaisach=tenloaisach;
+        this.tienThue = tienThue;
+        this.loaiSach = loaiSach;
     }
 
-    public int getMaSach() {
-        return maSach;
+    public int getMasach() {
+        return masach;
     }
 
-    public void setMaSach(int maSach) {
-        this.maSach = maSach;
+    public void setMasach(int masach) {
+        this.masach = masach;
     }
 
     public String getTenSach() {
@@ -45,34 +31,19 @@ public class Sach {
         this.tenSach = tenSach;
     }
 
-    public int getGiaThue() {
-        return giaThue;
+    public int getTienThue() {
+        return tienThue;
     }
 
-    public void setGiaThue(int giaThue) {
-        this.giaThue = giaThue;
+    public void setTienThue(int tienThue) {
+        this.tienThue = tienThue;
     }
 
-    public String getImage() {
-        return image;
+    public String getLoaiSach() {
+        return loaiSach;
     }
 
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public int getMaloaisach() {
-        return maloaisach;
-    }
-
-    public void setMaloaisach(int maloaisach) {
-        this.maloaisach = maloaisach;
-    }
-    public String getTenloaisach() {
-        return tenloaisach;
-    }
-
-    public void setTenloaisach(String tenloaisach) {
-        this.tenloaisach = tenloaisach;
+    public void setLoaiSach(String loaiSach) {
+        this.loaiSach = loaiSach;
     }
 }

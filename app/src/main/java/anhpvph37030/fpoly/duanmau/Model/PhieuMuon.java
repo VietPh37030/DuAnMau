@@ -1,70 +1,69 @@
 package anhpvph37030.fpoly.duanmau.Model;
 
 public class PhieuMuon {
-    private int mapm;
-    private String matt;
-    private int matv;
-    private int masach;
-    private int tienthue;
-    private int trasach;
+    private int id;
+    private String tenTV;
+    private String tenSach;
+    private int tienThue;
+    private String ngayThue;
+    private int trangThaiMuon;
+
+    public PhieuMuon(String tenTV, String tenSach, int tienThue, String ngayThue, int trangThaiMuon) {
+        this.tenTV = tenTV;
+        this.tenSach = tenSach;
+        this.tienThue = tienThue;
+        this.ngayThue = ngayThue;
+        this.trangThaiMuon = trangThaiMuon;
+    }
 
     public PhieuMuon() {
     }
 
-    public PhieuMuon(int mapm, String matt, int matv, int masach, int tienthue, int trasach) {
-        this.mapm = mapm;
-        this.matt = matt;
-        this.matv = matv;
-        this.masach = masach;
-        this.tienthue = tienthue;
-        this.trasach = trasach;
+    public int getId() {
+        return id;
     }
 
-    public int getMapm() {
-        return mapm;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setMapm(int mapm) {
-        this.mapm = mapm;
+    public String getTenTV() {
+        return tenTV;
     }
 
-    public String getMatt() {
-        return matt;
+    public void setTenTV(String tenTV) {
+        this.tenTV = tenTV;
     }
 
-    public void setMatt(String matt) {
-        this.matt = matt;
+    public String getTenSach() {
+        return tenSach;
     }
 
-    public int getMatv() {
-        return matv;
+    public void setTenSach(String tenSach) {
+        this.tenSach = tenSach;
     }
 
-    public void setMatv(int matv) {
-        this.matv = matv;
+    public int getTienThue() {
+        return tienThue;
     }
 
-    public int getMasach() {
-        return masach;
+    public void setTienThue(int tienThue) {
+        this.tienThue = tienThue;
     }
 
-    public void setMasach(int masach) {
-        this.masach = masach;
+    public String getNgayThue() {
+        return ngayThue;
     }
 
-    public int getTienthue() {
-        return tienthue;
+    public void setNgayThue(String ngayThue) {
+        this.ngayThue = ngayThue;
     }
 
-    public void setTienthue(int tienthue) {
-        this.tienthue = tienthue;
+    public int getTrangThaiMuon() {
+        return trangThaiMuon;
     }
 
-    public int getTrasach() {
-        return trasach;
-    }
-
-    public void setTrasach(int trasach) {
-        this.trasach = trasach;
+    public void setTrangThaiMuon(int trangThaiMuon) {
+        this.trangThaiMuon = trangThaiMuon;
     }
 }

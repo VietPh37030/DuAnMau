@@ -13,13 +13,34 @@
         android:theme="@style/Theme.DuAnMau"
         tools:targetApi="31">
         <activity
+            android:name=".Acti.DoiMatKhau"
+            android:exported="false" />
+        <activity
+            android:name=".Acti.Themthanhvien"
+            android:exported="false" />
+        <activity
+            android:name=".Acti.QlThanhVien"
+            android:exported="false" />
+        <activity
+            android:name=".Acti.Qldoanhthu"
+            android:exported="false" />
+        <activity
+            android:name=".Acti.Qlyop10"
+            android:exported="false" />
+        <activity
+            android:name=".Acti.Qlloaisach"
+            android:exported="false" />
+        <activity
+            android:name=".Acti.QlSach"
+            android:exported="false" />
+        <activity
             android:name=".Login"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Acti.Qlphieumuon"
             android:exported="false" />
         <activity
-            android:name=".WellCome"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

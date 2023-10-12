@@ -5,13 +5,15 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,160 +21,172 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-
-import com.google.android.material.textfield.TextInputEditText;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 
-import anhpvph37030.fpoly.duanmau.Dao.LoaiSachDao;
-import anhpvph37030.fpoly.duanmau.Dao.SachDao;
+import anhpvph37030.fpoly.duanmau.DAO.LoaiSachDao;
+import anhpvph37030.fpoly.duanmau.DAO.SachDao;
 import anhpvph37030.fpoly.duanmau.Model.LoaiSach;
 import anhpvph37030.fpoly.duanmau.Model.Sach;
 import anhpvph37030.fpoly.duanmau.R;
 
 public class SachAdapter extends RecyclerView.Adapter<SachAdapter.ViewHolder> {
-    public Context context;
-    public ArrayList<Sach> list = new ArrayList<>();
+    private Context context;
+    private ArrayList<Sach> list;
+    SachDao sachDAO;
 
     public SachAdapter(Context context, ArrayList<Sach> list) {
         this.context = context;
         this.list = list;
+        sachDAO = new SachDao(context);
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.rcy_qlsach, parent, false);
-
+        LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+        View view = inflater.inflate(R.layout.rcy_sach, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Sach sach = list.get(position);
-
-        holder.tvtensach.setText("Tên Sách:"  +sach.getTenSach());
-        holder.tvgiathue.setText("Giá Thuê:" +String.valueOf(sach.getGiaThue()));
-        holder.tvmaloaisach.setText("Mã Loại Sách:"+String.valueOf(sach.getMaloaisach()));
-        holder.tvtenloaisach.setText("Tên Loại Sách:"+sach.getTenloaisach());
-        holder.imgdelete.setOnClickListener(new View.OnClickListener() {
+        holder.txtTenSach.setText(sach.getTenSach());
+        holder.txtTienThue.setText(String.valueOf(sach.getTienThue()));
+        holder.txtLoaiSach.setText(sach.getLoaiSach());
+        holder.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle("Bạn có muốn xóa không?");
                 builder.setIcon(R.drawable.baseline_warning_24);
+                builder.setCancelable(false);
+                builder.setTitle("Xóa sách");
+                builder.setMessage("Bạn có muốn xóa không ?");
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        SachDao dao = new SachDao();
-                        int check = dao.deletesach(context, list.get(holder.getAdapterPosition()).getMaSach());
-                        switch (check) {
-                            case 1:
-                                Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
-                                list.clear();
-                                list = dao.listSach_tenloaisach(context);
-                                notifyDataSetChanged();
-                                break;
-
-                            case -1:
-                                Toast.makeText(context, "Không thể xóa sách này vì phiếu mượn có", Toast.LENGTH_SHORT).show();
-                                break;
-
-                            case 0:
-                                Toast.makeText(context, "Xóa thất bại", Toast.LENGTH_SHORT).show();
+                        // bắt sự kiện nhấn nút Yes
+                        if (sachDAO.deleteS(sach.getMasach()) > 0) {
+                            list.clear();
+                            list.addAll(sachDAO.getSach());
+                            Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
+                            notifyDataSetChanged();
+                        } else {
+                            Toast.makeText(context, "Xóa thất bại", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
+                        // bắt sự kiện nhấn nút No
                     }
                 });
                 builder.show();
             }
         });
-        ////////////////////////////////
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public boolean onLongClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                LayoutInflater inflater = ((Activity)context).getLayoutInflater();
-                view = inflater.inflate(R.layout.editsach, null);
-                builder.setView(view);
-                Dialog dialog = builder.create();
-                dialog.show();
-                TextInputEditText edtts = view.findViewById(R.id.edtts);
-                TextInputEditText edtgs = view.findViewById(R.id.edtgs);
-                TextInputEditText edtanh = view.findViewById(R.id.edtanh);
-                Button btnss = view.findViewById(R.id.btnss);
-                Spinner spnnmls = view.findViewById(R.id.spnnmls);
-                edtts.setText(sach.getTenSach());
-                edtgs.setText(String.valueOf(sach.getGiaThue()));
-                edtanh.setText(sach.getImage());
-                btnss.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String tens = edtts.getText().toString();
-                        int gs = Integer.parseInt(edtgs.getText().toString());
-                        String anh = edtanh.getText().toString();
-                        if (tens.equals("") || String.valueOf(gs).equals("")) {
-                            Toast.makeText(context, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
-                        }else{
-                            HashMap<String, Object> hsTV = (HashMap<String, Object>) spnnmls.getSelectedItem();
-                            int maloai = Integer.parseInt(String.valueOf(hsTV.get("MALOAI")));
-                            Sach sach = new Sach(list.get(holder.getAdapterPosition()).getMaSach(), edtts.getText().toString(), Integer.parseInt(edtgs.getText().toString()), edtanh.getText().toString(), maloai);
-                            SachDao dao = new SachDao();
-                            String check = dao.updatesach(context, String.valueOf(list.get(holder.getAdapterPosition()).getMaSach()), sach);
-                            Toast.makeText(context, check, Toast.LENGTH_SHORT).show();
-                            list.clear();
-                            list = dao.listSach_tenloaisach(context);
-                            dialog.dismiss();
-                            notifyDataSetChanged();
-                        }
-                    }
-                });
-                getDataSach(spnnmls);
-                return false;
+            public boolean onLongClick(View v) {
+                updateDialog(sach);
+                return true;
             }
         });
     }
-    private void getDataSach(Spinner spnSach) {
-        LoaiSachDao dao1 = new LoaiSachDao();
-        ArrayList<LoaiSach> list = dao1.getLoaiSach(context);
-        ArrayList<HashMap<String, Object>> listHM = new ArrayList<>();
-        for (LoaiSach x : list) {
-            HashMap<String, Object> hs = new HashMap<>();
-            hs.put("MALOAI", x.getMaloai());
-            hs.put("MALOAI_TENLOAISACH", x.getMaloai() + ":" + x.getTenloaisach());
-            listHM.add(hs);
-        }
-        SimpleAdapter simpleAdapter = new SimpleAdapter(
-                context, listHM, android.R.layout.simple_list_item_1,
-                new String[]{"MALOAI_TENLOAISACH"},
-                new int[]{android.R.id.text1}
-        );
-        spnSach.setAdapter(simpleAdapter);
+    private void updateDialog(Sach sach) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+        View view = inflater.inflate(R.layout.update_sach, null);
+        builder.setView(view);
+        builder.setCancelable(false);
+        Dialog dialog = builder.create();
+        dialog.show();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        EditText edtTenSach,edtTienThue;
+        Spinner edtTenLoai;
+        Button btnSua, btnHuy;
+
+        edtTenSach = view.findViewById(R.id.edtTenSach);
+        edtTienThue = view.findViewById(R.id.edtTienThue);
+        edtTenLoai = view.findViewById(R.id.edtTenLoai);
+        btnSua = view.findViewById(R.id.btnSua);
+        btnHuy = view.findViewById(R.id.btnHuy);
+
+        edtTenSach.setText(sach.getTenSach());
+        edtTienThue.setText(String.valueOf(sach.getTienThue()));
+        // Thay đổi dòng này:
+// edtTenLoai.setText(sach.getLoaiSach());
+// Thành dòng này:
+        edtTenLoai.setAdapter(new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, getTenLoaiSachList()));
+        edtTenLoai.setSelection(getTenLoaiSachList().indexOf(sach.getLoaiSach()));
+
+
+        btnSua.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String tensach = edtTenSach.getText().toString();
+                String tienthue = edtTienThue.getText().toString();
+                String tenloai = edtTenLoai.getSelectedItem().toString();
+
+                if (tensach.isEmpty()||tienthue.isEmpty()){
+                    Toast.makeText(context, "Không được để trống", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (!tienthue.matches("\\d+")){
+                    Toast.makeText(context, "Tiền thuê phải là sô", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                sach.setTenSach(tensach);
+                sach.setTienThue(Integer.parseInt(tienthue));
+                sach.setLoaiSach(tenloai);
+
+                if (sachDAO.updateS(sach)>0){
+                    list.clear();
+                    list.addAll(sachDAO.getSach());
+                    notifyDataSetChanged();
+                    dialog.dismiss();
+                    Toast.makeText(context, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(context, "Lỗi cập nhật", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        btnHuy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
     }
+    private ArrayList<String> getTenLoaiSachList() {
+        LoaiSachDao loaiSachDAO = new LoaiSachDao(context);
+        ArrayList<LoaiSach> list1 = loaiSachDAO.getAllLoaiSach();
+        ArrayList<String> tenLoaiSachList = new ArrayList<>();
+
+        for (LoaiSach loaiSach: list1){
+            tenLoaiSachList.add(loaiSach.getTenLoai());
+        }
+        return tenLoaiSachList;
+    }
+
     @Override
     public int getItemCount() {
         return list.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvtensach, tvgiathue, tvmaloaisach, tvtenloaisach;
-        ImageView imgsach;
-        ImageButton imgdelete;
-
+        TextView txtTenSach,txtTienThue,txtLoaiSach;
+        ImageButton btnDelete;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvtensach = itemView.findViewById(R.id.tvTenSach);
-            tvgiathue = itemView.findViewById(R.id.tvGiaThue);
-            tvmaloaisach = itemView.findViewById(R.id.tvMaloaiSach);
-            tvtenloaisach = itemView.findViewById(R.id.tvLoai);
-            imgsach = itemView.findViewById(R.id.imgsach);
-            imgdelete = itemView.findViewById(R.id.imgDeleteS);
+            txtTenSach = itemView.findViewById(R.id.txtTenSach);
+            txtTienThue = itemView.findViewById(R.id.txtTienThue);
+            txtLoaiSach = itemView.findViewById(R.id.txtLoaiSach);
+            btnDelete = itemView.findViewById(R.id.btnDelete);
         }
     }
 }

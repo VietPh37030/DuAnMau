@@ -1,30 +1,29 @@
 package anhpvph37030.fpoly.duanmau.Model;
 
 public class LoaiSach {
-    private int maloai;
-    private String tenloaisach;
+    private int maloaisach;
+    private String tenLoai;
 
     public LoaiSach() {
     }
 
-    public LoaiSach(int maloai, String tenloaisach) {
-        this.maloai = maloai;
-        this.tenloaisach = tenloaisach;
+    public LoaiSach(String tenLoai) {
+        this.tenLoai = tenLoai;
     }
 
-    public int getMaloai() {
-        return maloai;
+    public int getMaloaisach() {
+        return maloaisach;
     }
 
-    public void setMaloai(int maloai) {
-        this.maloai = maloai;
+    public void setMaloaisach(int maloaisach) {
+        this.maloaisach = maloaisach;
     }
 
-    public String getTenloaisach() {
-        return tenloaisach;
+    public String getTenLoai() {
+        return tenLoai;
     }
 
-    public void setTenloaisach(String tenloaisach) {
-        this.tenloaisach = tenloaisach;
+    public void setTenLoai(String tenLoai) {
+        this.tenLoai = tenLoai;
     }
 }
