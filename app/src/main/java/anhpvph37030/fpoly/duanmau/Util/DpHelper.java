@@ -74,7 +74,7 @@ public class DpHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
 
-        // người sử dụng
+
         String dropTableUser = "DROP TABLE IF EXISTS user";
         db.execSQL(dropTableUser);
         onCreate(db);

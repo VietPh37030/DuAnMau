@@ -1,5 +1,6 @@
 package anhpvph37030.fpoly.duanmau.DAO;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -8,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 
 import anhpvph37030.fpoly.duanmau.Model.PhieuMuon;
+import anhpvph37030.fpoly.duanmau.Model.Top10;
 import anhpvph37030.fpoly.duanmau.Util.DpHelper;
 
 public class PhieuMuonDao {
@@ -62,6 +64,52 @@ SQLiteDatabase database;
         long check = database.update("PM", values, "ID=?", new String[]{String.valueOf(pm.getId())});
         return check;
     }
+    public ArrayList<Top10> getTop10() {
+        ArrayList<Top10> top10List = new ArrayList<>();
 
+        // Chuỗi truy vấn SQL để lấy ra 10 cuốn sách được thuê nhiều nhất
+        String query = "SELECT s.TENSACH AS TenSach, COUNT(pm.ID) AS SoLuotMuon " +
+                "FROM sach s " +
+                "INNER JOIN PM pm ON s.TENSACH = pm.TENSACH " +
+                "GROUP BY s.TENSACH " +
+                "ORDER BY SoLuotMuon DESC " +
+                "LIMIT 10";
 
+        database = dpHelper.getReadableDatabase();
+        Cursor cursor = database.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                @SuppressLint("Range") String tenSach = cursor.getString(cursor.getColumnIndex("TenSach"));
+                @SuppressLint("Range") int soLuotMuon = cursor.getInt(cursor.getColumnIndex("SoLuotMuon"));
+
+                Top10 topSach = new Top10(tenSach, soLuotMuon);
+
+                top10List.add(topSach);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        database.close();
+
+        return top10List;
+    }
+    @SuppressLint("Range")
+    public int getTongDoanhThu(String startDate, String endDate) {
+        database = dpHelper.getReadableDatabase();
+        int tongDoanhThu = 0;
+
+        String query = "SELECT SUM(TIENTHUE) AS TongDoanhThu " +
+                "FROM PM " +
+                "WHERE NGAYTHUE BETWEEN ? AND ?";
+
+        Cursor cursor = database.rawQuery(query, new String[]{startDate, endDate});
+
+        if (cursor.moveToFirst()) {
+            tongDoanhThu = cursor.getInt(cursor.getColumnIndex("TongDoanhThu"));
+        }
+
+        cursor.close();
+        return tongDoanhThu;
+    }
 }
