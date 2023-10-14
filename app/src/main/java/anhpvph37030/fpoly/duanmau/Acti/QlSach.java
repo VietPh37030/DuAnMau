@@ -31,6 +31,7 @@ import com.google.android.material.navigation.NavigationView;
 import java.util.ArrayList;
 
 import anhpvph37030.fpoly.duanmau.Adapter.SachAdapter;
+import anhpvph37030.fpoly.duanmau.DAO.AdminDao;
 import anhpvph37030.fpoly.duanmau.DAO.LoaiSachDao;
 import anhpvph37030.fpoly.duanmau.DAO.SachDao;
 import anhpvph37030.fpoly.duanmau.Login;
@@ -47,6 +48,7 @@ public class QlSach extends AppCompatActivity {
     private SachDao sachDAO;
     private ArrayList<Sach> list;
     private SachAdapter sachAdapter;
+    AdminDao adminDao;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +87,7 @@ public class QlSach extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawerLayout);
         toolbar = findViewById(R.id.my_toolbar);
         navigationView = findViewById(R.id.navigationView);
+        adminDao =new  AdminDao(this);
     }
     private void setUpToolbar() {
         setSupportActionBar(toolbar);
@@ -113,7 +116,18 @@ public class QlSach extends AppCompatActivity {
                     Intent intent = new Intent(QlSach.this, Qlyop10.class);
                     startActivity(intent);
                 } else if (item.getItemId() == R.id.themThanhVien) {
+                    SharedPreferences sharedPreferences = getSharedPreferences("myPreferences", Context.MODE_PRIVATE);
+                    String loggedInUser = sharedPreferences.getString("loggedInUser", "");
+                    String loggedInPass = sharedPreferences.getString("loggedInPass", "");
 
+                    if (adminDao.checkUser(loggedInUser,loggedInPass)) {
+                        // Người dùng có quyền admin
+                        // Cho phép họ truy cập chức năng thêm thành viên
+                        Intent intent = new Intent(QlSach.this, Themthanhvien.class);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(QlSach.this, "Bạn không có quyền truy cập chức năng này.", Toast.LENGTH_SHORT).show();
+                    }
                 } else if (item.getItemId() == R.id.doiMatKhau) {
                     Intent intent = new Intent(QlSach.this, DoiMatKhau.class);
                     startActivity(intent);

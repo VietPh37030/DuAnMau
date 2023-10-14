@@ -20,11 +20,13 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.Calendar;
 
+import anhpvph37030.fpoly.duanmau.DAO.AdminDao;
 import anhpvph37030.fpoly.duanmau.DAO.PhieuMuonDao;
 import anhpvph37030.fpoly.duanmau.Login;
 import anhpvph37030.fpoly.duanmau.R;
@@ -38,6 +40,7 @@ public class Qldoanhthu extends AppCompatActivity {
     TextView txtTongDoanhThu;
     PhieuMuonDao phieumuonDAO;
     String ngayBatDau, ngayKetThuc;
+    AdminDao adminDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,6 +130,7 @@ public class Qldoanhthu extends AppCompatActivity {
         btnDenNgay = findViewById(R.id.btnDenNgay);
         btnTuNgay = findViewById(R.id.btnTuNgay);
         phieumuonDAO = new PhieuMuonDao(this);
+        adminDao = new AdminDao(this);
     }
 
     private void setUpToolbar() {
@@ -157,7 +161,18 @@ public class Qldoanhthu extends AppCompatActivity {
                 } else if (item.getItemId() == R.id.doanhthu) {
                     drawerLayout.close();
                 } else if (item.getItemId() == R.id.themThanhVien) {
+                    SharedPreferences sharedPreferences = getSharedPreferences("myPreferences", Context.MODE_PRIVATE);
+                    String loggedInUser = sharedPreferences.getString("loggedInUser", "");
+                    String loggedInPass = sharedPreferences.getString("loggedInPass", "");
 
+                    if (adminDao.checkUser(loggedInUser,loggedInPass)) {
+                        // Người dùng có quyền admin
+                        // Cho phép họ truy cập chức năng thêm thành viên
+                        Intent intent = new Intent(Qldoanhthu.this, Themthanhvien.class);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(Qldoanhthu.this, "Bạn không có quyền truy cập chức năng này.", Toast.LENGTH_SHORT).show();
+                    }
                 } else if (item.getItemId() == R.id.doiMatKhau) {
                     Intent intent = new Intent(Qldoanhthu.this, DoiMatKhau.class);
                     startActivity(intent);

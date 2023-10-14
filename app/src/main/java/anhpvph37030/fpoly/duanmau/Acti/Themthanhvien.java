@@ -14,23 +14,65 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
 import anhpvph37030.fpoly.duanmau.DAO.NguoiDungDao;
 import anhpvph37030.fpoly.duanmau.Login;
+import anhpvph37030.fpoly.duanmau.Model.ThuThu;
 import anhpvph37030.fpoly.duanmau.R;
 
 public class Themthanhvien extends AppCompatActivity {
+    EditText edtUser,edtHoten,edtPass,edtNhapLai;
+    Button btnLuu;
+    private NguoiDungDao dao;
     private Toolbar toolbar;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_themthanhvien);
-
+        anhxa();
         setUpToolbar();
+        btnLuu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String user = edtUser.getText().toString();
+                String hoten = edtHoten.getText().toString();
+                String pass = edtPass.getText().toString();
+                String nhaplai = edtNhapLai.getText().toString();
+
+
+                if (user.isEmpty()||hoten.isEmpty()||pass.isEmpty()||nhaplai.isEmpty()){
+                    Toast.makeText(getApplicationContext(), "Không được để trống", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (!pass.equals(nhaplai)){
+                    Toast.makeText(getApplicationContext(), "Nhập lại mật khẩu sai", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                ThuThu thuThu = new ThuThu(user,hoten,pass);
+
+                if (dao.addTT(thuThu) > 0) {
+                    Toast.makeText(getApplicationContext(), "Thêm thành công", Toast.LENGTH_SHORT).show();
+                    edtHoten.setText("");
+                    edtUser.setText("");
+                    edtPass.setText("");
+                    edtNhapLai.setText("");
+
+                }else {
+                    Toast.makeText(getApplicationContext(), "Thêm thất bại", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
 
@@ -41,11 +83,22 @@ public class Themthanhvien extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+    private void anhxa() {
+        edtUser = findViewById(R.id.edtUser);
+        edtHoten = findViewById(R.id.edtHoten);
+        edtPass = findViewById(R.id.edtPass);
+        edtNhapLai = findViewById(R.id.edtNhapLai);
+        btnLuu = findViewById(R.id.btnLuu);
+        dao = new NguoiDungDao(this);
+        drawerLayout = findViewById(R.id.drawerLayout);
+        toolbar = findViewById(R.id.my_toolbar);
+        navigationView = findViewById(R.id.navigationView);
+    }
     private void setUpToolbar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.nav_icon);
-        getSupportActionBar().setTitle("Đổi mật khẩu");
+        getSupportActionBar().setTitle("Thêm Thành Viên");
         toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -95,8 +148,6 @@ public class Themthanhvien extends AppCompatActivity {
                 editor.putBoolean("isLoggedIn", false);
                 editor.apply();
                 Intent intent = new Intent(Themthanhvien.this, Login.class);
-
-                // Đặt cờ FLAG_ACTIVITY_NEW_TASK để tạo một nhiệm vụ mới
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
                 startActivity(intent);

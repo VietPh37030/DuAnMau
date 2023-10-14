@@ -16,15 +16,24 @@ public class DpHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // người sử dụng
-        String createTableUser = "CREATE TABLE user(ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+
+        String createTableAdmin = "CREATE TABLE admin(ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "TENDANGNHAP TEXT," +
+                "HOTEN TEXT," +
+                "MATKHAU TEXT)";
+        db.execSQL(createTableAdmin);// truy vấn
+        String dsnd = "INSERT INTO admin (TENDANGNHAP, HOTEN, MATKHAU) VALUES" +
+                "('admin','Pham Viet Anh','admin')," +
+                "('123','PhamVanB','123')";
+        db.execSQL(dsnd);
+        String createTableUser = "CREATE TABLE thuthu(ID INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "TENDANGNHAP TEXT," +
                 "HOTEN TEXT," +
                 "MATKHAU TEXT)";
         db.execSQL(createTableUser);// truy vấn
-        String dsnd = "INSERT INTO user (TENDANGNHAP, HOTEN, MATKHAU) VALUES" +
-                "('admin','Phạm Việt Anh','admin')";
-        db.execSQL(dsnd);
+        String dstt = "INSERT INTO thuthu (TENDANGNHAP, HOTEN, MATKHAU) VALUES" +
+                "('thuthu','Phạm Việt ','123')";
+        db.execSQL(dstt);
 
         // phiếu mượn
         String createTablePM = "CREATE TABLE PM(ID INTEGER PRIMARY KEY AUTOINCREMENT," +

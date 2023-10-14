@@ -32,6 +32,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 import anhpvph37030.fpoly.duanmau.Adapter.PhieuMuonAdapter;
+import anhpvph37030.fpoly.duanmau.DAO.AdminDao;
 import anhpvph37030.fpoly.duanmau.DAO.PhieuMuonDao;
 import anhpvph37030.fpoly.duanmau.DAO.SachDao;
 import anhpvph37030.fpoly.duanmau.DAO.ThanhVienDao;
@@ -50,6 +51,7 @@ public class Qlphieumuon extends AppCompatActivity {
     PhieuMuonDao phieuMuonDAO;
     ArrayList<PhieuMuon> list;
     PhieuMuonAdapter phieuMuonAdapter;
+    AdminDao adminDao;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +64,7 @@ public class Qlphieumuon extends AppCompatActivity {
         setUpToolbar();
 
         phieuMuonDAO = new PhieuMuonDao(this);
+        adminDao = new AdminDao(this);
         list = phieuMuonDAO.getAllPhieuMuon();
         phieuMuonAdapter = new PhieuMuonAdapter(this, list);
 
@@ -104,7 +107,16 @@ public class Qlphieumuon extends AppCompatActivity {
                     Intent intent = new Intent(Qlphieumuon.this, Qldoanhthu.class);
                     startActivity(intent);
                 } else if (item.getItemId() == R.id.themThanhVien) {
+                    SharedPreferences sharedPreferences = getSharedPreferences("myPreferences", Context.MODE_PRIVATE);
+                    String loggedInUser = sharedPreferences.getString("loggedInUser", "");
+                    String loggedInPass = sharedPreferences.getString("loggedInPass", "");
 
+                    if (adminDao.checkUser(loggedInUser,loggedInPass)) {
+                        Intent intent = new Intent(Qlphieumuon.this, Themthanhvien.class);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(Qlphieumuon.this, "Bạn không có quyền truy cập chức năng này.", Toast.LENGTH_SHORT).show();
+                    }
                 } else if (item.getItemId() == R.id.doiMatKhau) {
                     Intent intent = new Intent(Qlphieumuon.this, DoiMatKhau.class);
                     startActivity(intent);

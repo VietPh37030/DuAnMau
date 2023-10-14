@@ -16,12 +16,14 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 
 import anhpvph37030.fpoly.duanmau.Adapter.Top10Adapter;
+import anhpvph37030.fpoly.duanmau.DAO.AdminDao;
 import anhpvph37030.fpoly.duanmau.DAO.PhieuMuonDao;
 import anhpvph37030.fpoly.duanmau.Login;
 import anhpvph37030.fpoly.duanmau.Model.Top10;
@@ -35,6 +37,7 @@ public class Qlyop10 extends AppCompatActivity {
     private Toolbar toolbar;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
+    AdminDao adminDao;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +58,7 @@ public class Qlyop10 extends AppCompatActivity {
         toolbar = findViewById(R.id.my_toolbar);
         navigationView = findViewById(R.id.navigationView);
         drawerLayout = findViewById(R.id.drawerLayout);
+        adminDao =new AdminDao(this);
     }
 
     private void setUpToolbar() {
@@ -85,7 +89,18 @@ public class Qlyop10 extends AppCompatActivity {
                     Intent intent = new Intent(Qlyop10.this, Qldoanhthu.class);
                     startActivity(intent);
                 } else if (item.getItemId() == R.id.themThanhVien) {
+                    SharedPreferences sharedPreferences = getSharedPreferences("myPreferences", Context.MODE_PRIVATE);
+                    String loggedInUser = sharedPreferences.getString("loggedInUser", "");
+                    String loggedInPass = sharedPreferences.getString("loggedInPass", "");
 
+                    if (adminDao.checkUser(loggedInUser,loggedInPass)) {
+                        // Người dùng có quyền admin
+                        // Cho phép họ truy cập chức năng thêm thành viên
+                        Intent intent = new Intent(Qlyop10.this, Themthanhvien.class);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(Qlyop10.this, "Bạn không có quyền truy cập chức năng này.", Toast.LENGTH_SHORT).show();
+                    }
                 } else if (item.getItemId() == R.id.doiMatKhau) {
                     Intent intent = new Intent(Qlyop10.this, DoiMatKhau.class);
                     startActivity(intent);

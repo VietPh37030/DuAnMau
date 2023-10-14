@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
+import anhpvph37030.fpoly.duanmau.DAO.AdminDao;
 import anhpvph37030.fpoly.duanmau.DAO.NguoiDungDao;
 import anhpvph37030.fpoly.duanmau.Login;
 import anhpvph37030.fpoly.duanmau.R;
@@ -31,7 +32,8 @@ public class DoiMatKhau extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private EditText edtMkOld,edtMkNew,edtNhapLai;
     private Button btnLuu;
-    private NguoiDungDao    nguoiDungDao;
+    private NguoiDungDao   nguoiDungDao;
+    private AdminDao admin;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,9 +51,9 @@ public class DoiMatKhau extends AppCompatActivity {
         String mkc = edtMkOld.getText().toString();
         String mkm = edtMkNew.getText().toString();
         String nhaplai = edtNhapLai.getText().toString();
-        if (mkc.isEmpty()||mkm.isEmpty()||nhaplai.isEmpty()){
+        if (mkc.isEmpty() || mkm.isEmpty() || nhaplai.isEmpty()) {
             Toast.makeText(DoiMatKhau.this, "Không được để trống", Toast.LENGTH_SHORT).show();
-        }else{
+        } else {
             android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(DoiMatKhau.this);
             builder.setIcon(R.drawable.baseline_warning_24);
             builder.setCancelable(false);
@@ -60,21 +62,22 @@ public class DoiMatKhau extends AppCompatActivity {
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    if (mkm.equals(nhaplai)){
-                        if (nguoiDungDao.checkPasswordAndChange(mkc,mkm)){
+                    if (mkm.equals(nhaplai)) {
+                        if (admin.checkPasswordAndChange(mkc, mkm)) {
                             Toast.makeText(DoiMatKhau.this, "Đổi thành công", Toast.LENGTH_SHORT).show();
                             edtMkNew.setText("");
                             edtMkOld.setText("");
                             edtNhapLai.setText("");
-
-                            dialog.dismiss();
-                        }else{
+                        } else if (nguoiDungDao.doiMKTT(mkc, mkm)) {
+                            Toast.makeText(DoiMatKhau.this, "Đổi thành công", Toast.LENGTH_SHORT).show();
+                            edtMkNew.setText("");
+                            edtMkOld.setText("");
+                            edtNhapLai.setText("");
+                        } else {
                             Toast.makeText(DoiMatKhau.this, "Mật khẩu cũ sai", Toast.LENGTH_SHORT).show();
-                            dialog.dismiss();
                         }
-                    }else {
+                    } else {
                         Toast.makeText(DoiMatKhau.this, "Nhập lại mật khẩu sai", Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
                     }
 
                 }
@@ -99,6 +102,7 @@ public class DoiMatKhau extends AppCompatActivity {
         edtMkNew = findViewById(R.id.edtMkNew);
         edtNhapLai = findViewById(R.id.edtNhapLai);
         btnLuu = findViewById(R.id.btnLuu);
+        admin = new AdminDao(this);
         nguoiDungDao = new NguoiDungDao(this);
     }
     @Override
