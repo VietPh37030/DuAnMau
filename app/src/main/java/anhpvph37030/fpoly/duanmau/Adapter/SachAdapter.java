@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Filter;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -31,12 +32,13 @@ import anhpvph37030.fpoly.duanmau.R;
 
 public class SachAdapter extends RecyclerView.Adapter<SachAdapter.ViewHolder> {
     private Context context;
-    private ArrayList<Sach> list;
+    private ArrayList<Sach> list,list1;
     SachDao sachDAO;
 
     public SachAdapter(Context context, ArrayList<Sach> list) {
         this.context = context;
         this.list = list;
+        this.list1 = list;
         sachDAO = new SachDao(context);
     }
 
@@ -177,7 +179,34 @@ public class SachAdapter extends RecyclerView.Adapter<SachAdapter.ViewHolder> {
     public int getItemCount() {
         return list.size();
     }
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                String strSearch = constraint.toString();
+                if (strSearch.isEmpty()){
+                    list = list1;
+                }else{
+                    ArrayList<Sach> listSearch = new ArrayList<>();
+                    for (Sach sach: list1){
+                        if (sach.getTenSach().toLowerCase().contains(strSearch.toLowerCase())){
+                            listSearch.add(sach);
+                        }
+                    }
+                    list = listSearch;
+                }
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = list;
+                return filterResults;
+            }
 
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                list = (ArrayList<Sach>) results.values;
+                notifyDataSetChanged();
+            }
+        };
+    }
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView txtTenSach,txtTienThue,txtLoaiSach;
         ImageButton btnDelete;

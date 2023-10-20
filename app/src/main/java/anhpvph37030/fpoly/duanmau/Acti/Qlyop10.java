@@ -38,12 +38,13 @@ public class Qlyop10 extends AppCompatActivity {
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
     AdminDao adminDao;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qlyop10);
-        anhxa();
-        setUpToolbar();
+        anhxa(); // Initialize UI elements
+        setUpToolbar(); // Set up the app's toolbar
 
         phieumuonDAO = new PhieuMuonDao(this);
         list = (ArrayList<Top10>) phieumuonDAO.getTop10();
@@ -53,15 +54,18 @@ public class Qlyop10 extends AppCompatActivity {
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(topAdapter);
     }
+
     private void anhxa() {
+        // Initialize UI elements by finding their views in the layout
         recyclerView = findViewById(R.id.recycleView);
         toolbar = findViewById(R.id.my_toolbar);
         navigationView = findViewById(R.id.navigationView);
         drawerLayout = findViewById(R.id.drawerLayout);
-        adminDao =new AdminDao(this);
+        adminDao = new AdminDao(this);
     }
 
     private void setUpToolbar() {
+        // Set up the app's toolbar
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.nav_icon);
@@ -71,6 +75,7 @@ public class Qlyop10 extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                // Handle navigation menu item clicks
                 if (item.getItemId() == R.id.qlpm) {
                     Intent intent = new Intent(Qlyop10.this, Qlphieumuon.class);
                     startActivity(intent);
@@ -93,9 +98,9 @@ public class Qlyop10 extends AppCompatActivity {
                     String loggedInUser = sharedPreferences.getString("loggedInUser", "");
                     String loggedInPass = sharedPreferences.getString("loggedInPass", "");
 
-                    if (adminDao.checkUser(loggedInUser,loggedInPass)) {
-                        // Người dùng có quyền admin
-                        // Cho phép họ truy cập chức năng thêm thành viên
+                    if (adminDao.checkUser(loggedInUser, loggedInPass)) {
+                        // User has admin privileges
+                        // Allow them to access the add member feature
                         Intent intent = new Intent(Qlyop10.this, Themthanhvien.class);
                         startActivity(intent);
                     } else {
@@ -105,12 +110,13 @@ public class Qlyop10 extends AppCompatActivity {
                     Intent intent = new Intent(Qlyop10.this, DoiMatKhau.class);
                     startActivity(intent);
                 } else if (item.getItemId() == R.id.dangxuat) {
-                    dialog_dangxuat();
+                    dialog_dangxuat(); // Show a logout confirmation dialog
                 }
                 return false;
             }
         });
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -118,7 +124,9 @@ public class Qlyop10 extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
     public void dialog_dangxuat() {
+        // Show a dialog to confirm logout
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setIcon(R.drawable.out);
         builder.setCancelable(false);
@@ -127,16 +135,14 @@ public class Qlyop10 extends AppCompatActivity {
         builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // Bắt sự kiện nhấn nút Có
+                // Handle the "Có" (Yes) button click
                 SharedPreferences sharedPreferences = getSharedPreferences("thongtin", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putBoolean("isLoggedIn", false);
                 editor.apply();
                 Intent intent = new Intent(Qlyop10.this, Login.class);
-
-                // Đặt cờ FLAG_ACTIVITY_NEW_TASK để tạo một nhiệm vụ mới
+                // Set the FLAG_ACTIVITY_NEW_TASK flag to create a new task
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
                 startActivity(intent);
                 finish();
             }
@@ -144,7 +150,7 @@ public class Qlyop10 extends AppCompatActivity {
         builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // Bắt sự kiện nhấn nút Không
+                // Handle the "Không" (No) button click
             }
         });
         builder.show();
